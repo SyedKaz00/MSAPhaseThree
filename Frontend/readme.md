@@ -1,0 +1,1 @@
+This is a typescript React App for displaying the price of Cryptocurrencies and displaying how much money the user has gained / lost.
