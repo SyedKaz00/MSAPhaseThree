@@ -27,6 +27,7 @@ function App() {
   const [finalAmount, setfinalAmount] = React.useState(Number);
   const [posneg, setposneg] = React.useState('');
   const [loading, setLoading] = React.useState(true);
+
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurr((event.target as HTMLInputElement).value);
   };
@@ -81,11 +82,7 @@ function App() {
         console.log("Crypto Not Found");
         setinitPrice('');
       });
-    //Get The Price Today
 
-    //Get PErcentage Change
-    //Apply Percentage Change to Initial Amount
-    //Display in right side box element
   }
   const dateConvertToApi = () => {
     const input = date
@@ -173,6 +170,7 @@ function App() {
                 onChange={(e) => setDate(e.target.value)}
               />
               <Button variant="outlined" onClick={handleSubmit}>Submit</Button>
+
             </FormGroup>
           </form>
         </Box>
@@ -186,7 +184,7 @@ function App() {
           justifyContent: "center",
           alignItems: "center"
 
-        }}> 
+        }}>
           <div>
             {loading ? <div> <img alt="Loading" src={LoadingGif} /> </div> : <Box textAlign="center" display="flex" justifyContent="center" alignItems="center" > <h2>Your Investment is now worth a whopping ${finalAmount.toFixed(2)}, from an initial of ${amount}</h2></Box>
             }
