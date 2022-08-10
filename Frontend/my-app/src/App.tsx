@@ -30,37 +30,44 @@ function App() {
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurr((event.target as HTMLInputElement).value);
   };
-  const getInitPrice = async() => {
+  const getInitPrice = () => {
     //console.log(dateConvertToApi())
-    await axios
+     axios
       .get(BASE_API_URL + "/coins/" + curr + "/history" , { params: { date: dateConvertToApi(),localization:false } })
       .then((res) => {
         console.log("Initial Price:"+res.data.market_data.current_price.nzd)
         setinitPrice(res.data.market_data.current_price.nzd);
+        return "Second"
       })
       .catch((err) => {
         console.log("Crypto Not Found");
         setinitPrice('');
+        return "Second Fail"
       });
   }
 
-  const getTodayPrice = async() => {
+  const getTodayPrice = () => {
     //console.log(dateConvertToApi())
-    await axios
+     axios
       .get(BASE_API_URL + "/simple/price" , { params: { ids: curr, vs_currencies:"nzd" } })
       .then((res) => {
         const data = JSON.stringify(res.data)
-        let num = data.replace(/\D/g,'');
+        //let num = data.replace(/\D/g,'');
+        let num = data.replace(/[^\d.]+/g, '');
+        console.log("Todays Price:"+num)
         settodayPrice(num);
+        return "first"
       })
       .catch((err) => {
         console.log("Todays Crypto Not Found");
         setinitPrice('');
+        return "first Fail"
       });
   }
-  const getPercentageChange = async() => {
-    var percDiff = await ( ( parseInt(initPrice) - parseInt(todayPrice)) / ( parseInt(initPrice) ) );
+  const getPercentageChange = () => {
+    var percDiff =   ( ( parseFloat(initPrice) - parseFloat(todayPrice)) / ( parseFloat(initPrice) ) );
     console.log("Per Dif"+percDiff)
+    return percDiff
   }
 
   const handleSubmit = () => {
