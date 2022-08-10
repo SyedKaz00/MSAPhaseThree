@@ -3,19 +3,17 @@ import './App.css';
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel,
   Radio,
   RadioGroup,
-  Rating,
   TextField,
   Typography,
 } from "@mui/material";
 import axios from "axios";
-
+import LoadingGif from "../src/loading.gif"
 
 
 function App() {
@@ -28,23 +26,15 @@ function App() {
   const [perc, setPerc] = React.useState(Number);
   const [finalAmount, setfinalAmount] = React.useState(Number);
   const [posneg, setposneg] = React.useState('');
-
+  const [loading, setLoading] = React.useState(true);
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurr((event.target as HTMLInputElement).value);
   };
-  const getInitPrice = () => {
-    //console.log(dateConvertToApi())
-
-  }
-
-  const getTodayPrice = () => {
-    //console.log(dateConvertToApi())
-
-  }
 
 
   const handleSubmit = () => {
     todaysDate()
+    setLoading(true);
     console.log(curr + date + amount)
     //Get The Price when initially bought
     axios
@@ -62,14 +52,22 @@ function App() {
             console.log("Todays Price:" + num)
             let currentPrice = parseFloat(num)
             settodayPrice(num);
-            
+
             //Get percentage change
-            var percDiff = 1-((initialPrice - currentPrice) / (initialPrice));
+            var percDiff = 1 - ((initialPrice - currentPrice) / (initialPrice));
             console.log("Per Dif" + percDiff)
             setPerc(percDiff)
-            setfinalAmount( parseFloat(amount) * percDiff )
+            if (percDiff >= 1) {
+              setposneg("P")
+            } else {
+              setposneg("N")
+            }
+
+            //Calculate what the investment is worth now
+            setfinalAmount(parseFloat(amount) * percDiff)
             console.log(finalAmount)
             console.log(parseFloat(amount) * percDiff)
+            setLoading(false)
 
           })
           .catch((err) => {
@@ -84,7 +82,7 @@ function App() {
         setinitPrice('');
       });
     //Get The Price Today
-    
+
     //Get PErcentage Change
     //Apply Percentage Change to Initial Amount
     //Display in right side box element
@@ -102,68 +100,99 @@ function App() {
 
   return (
     <Box>
-      <div>Calculate Crypto Gains/Losses</div>
-      <Box sx={{
-        width: '50%',
-        height: '10%',
-        backgroundColor: 'silver',
-        borderColor: 'pink',
-      }}>
-        <form>
-          <FormGroup
-            sx={{
-              padding: 2,
-              borderRadius: 2,
-              border: "1px solid",
-              borderColor: "primary.main",
-            }}
-          >
-            <FormLabel component="legend">Initial "Investment"</FormLabel>
-            <TextField
-              sx={{ paddingBottom: 2 }}
-              type="number"
-              name="initValue"
-              variant="outlined"
-              placeholder="$100"
-              value={amount}
-              InputProps={{ inputProps: { min: 0, max: 1000000000 } }}
-              onChange={(prop: any) => {
-                setAm(prop.target.value);
-              }}
-              required
-            />
-            <FormLabel component="legend">Select Currency</FormLabel>
-            <FormControl>
-              <FormLabel id="currency">Crypto Currencies</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="radio-group"
-                name="Crypto"
-                value={curr}
-                onChange={handleRadioChange}
-              >
-                <FormControlLabel value="bitcoin" control={<Radio />} label="Bitcoin" />
-                <FormControlLabel value="ethereum" control={<Radio />} label="Ethereum" />
-                <FormControlLabel value="ripple" control={<Radio />} label="Ripple" />
-              </RadioGroup>
-            </FormControl>
 
-            <Typography component="legend">Date Of Investment</Typography>
-            <TextField
-              required
-              margin="dense"
-              id="dateInit"
-              value={date}
-              label=""
-              type="date"
-              fullWidth
-              variant="standard"
-              InputProps={{ inputProps: { max: todaysDate() } }}
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <Button variant="outlined" onClick={handleSubmit}>Submit</Button>
-          </FormGroup>
-        </form>
+      <Box display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="10vh"
+      ><h1>Calculate Crypto Gains/Losses</h1>
+      </Box>
+
+      <Box display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh"
+      >
+        <Box sx={{
+          width: '30%',
+
+          backgroundColor: 'LightBlue',
+          borderColor: 'pink',
+        }}>
+          <form>
+            <FormGroup
+              sx={{
+                padding: 2,
+                height: '100%',
+                borderRadius: 2,
+                border: "1px solid",
+                borderColor: "primary.main",
+              }}
+            >
+              <FormLabel component="legend">Initial Investment</FormLabel>
+              <TextField
+                sx={{ paddingBottom: 2 }}
+                type="number"
+                name="initValue"
+                variant="outlined"
+                placeholder="$100"
+                value={amount}
+                InputProps={{ inputProps: { min: 0 } }}
+                onChange={(prop: any) => {
+                  setAm(prop.target.value);
+                }}
+                required
+              />
+              <FormControl>
+                <FormLabel id="currency">Select Currency</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="radio-group"
+                  name="Crypto"
+                  value={curr}
+                  onChange={handleRadioChange}
+                >
+                  <FormControlLabel value="bitcoin" control={<Radio />} label="Bitcoin" />
+                  <FormControlLabel value="ethereum" control={<Radio />} label="Ethereum" />
+                  <FormControlLabel value="ripple" control={<Radio />} label="Ripple" />
+                  <FormControlLabel value="dogecoin" control={<Radio />} label="Doge Coin" />
+                </RadioGroup>
+              </FormControl>
+
+              <Typography component="legend">Date Of Investment</Typography>
+              <TextField
+                required
+                margin="dense"
+                id="dateInit"
+                value={date}
+                label=""
+                type="date"
+                fullWidth
+                variant="standard"
+                InputProps={{ inputProps: { max: todaysDate() } }}
+                onChange={(e) => setDate(e.target.value)}
+              />
+              <Button variant="outlined" onClick={handleSubmit}>Submit</Button>
+            </FormGroup>
+          </form>
+        </Box>
+
+        <Box sx={{
+          width: '30%',
+          height: '55%',
+          backgroundColor: 'LightCoral',
+          borderColor: 'pink',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+
+        }}> 
+          <div>
+            {loading ? <div> <img alt="Loading" src={LoadingGif} /> </div> : <Box textAlign="center" display="flex" justifyContent="center" alignItems="center" > <h2>Your Investment is now worth a whopping ${finalAmount.toFixed(2)}, from an initial of ${amount}</h2></Box>
+            }
+          </div>
+        </Box>
+
       </Box>
     </Box>
   );
