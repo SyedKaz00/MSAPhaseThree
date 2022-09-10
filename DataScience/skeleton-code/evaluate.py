@@ -21,7 +21,8 @@ print('Resized Dimensions : ',resized.shape)
 #cv2.destroyAllWindows()
 #Resize Image
 #Load Model
-model = tf.keras.models.load_model('output\\hmodel.h5')
+model = tf.keras.models.load_model('output\\hypermodel.h5')
+#print(model.summary())
 #make Prediction
 probab = model.predict(resized.reshape(1,32,32,3)) # Set to a numpy array of correct input data.
 #plt.imshow(resized)
