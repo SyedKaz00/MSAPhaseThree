@@ -25,6 +25,9 @@ import Splash from "./splash";
 import ProtectedRoute from './auth/protected-route';
 import App from "./App";
 
+
+
+
 const Home = () => {
   const { isLoading } = useAuth0();
 

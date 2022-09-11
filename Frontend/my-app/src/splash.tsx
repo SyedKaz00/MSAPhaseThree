@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
+//TODO MAke in to GRID, Ad Break points, Add fluid animation in background
 import LoginButton from "./login";
 function Splash() {
 

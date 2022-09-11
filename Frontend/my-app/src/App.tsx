@@ -17,6 +17,9 @@ import LoadingGif from "../src/loading.gif"
 import LoginButton from "./login";
 import LogoutButton from "./logout";
 import Profile from "./profile";
+//Implement Counter to count number of times user has checked their crypto losses
+import { useSelector, useDispatch } from "react-redux";
+import increment from "./redux/action"; 
 
 function App() {
   const BASE_API_URL = "https://api.coingecko.com/api/v3";
@@ -36,6 +39,7 @@ function App() {
 
 
   const handleSubmit = () => {
+    dispatch(increment())
     todaysDate()
     setLoading(true);
     console.log(curr + date + amount)
@@ -96,6 +100,12 @@ function App() {
     let today = new Date();
     return (today.getFullYear() + "-" + today.toLocaleString("en-US", { month: '2-digit' }) + "-" + today.toLocaleString("en-US", { day: '2-digit' }))
   }
+  //Redux Code
+  const counter = useSelector((state : any) => state.counter);
+  const dispatch = useDispatch();
+
+
+
 
   return (
     <Box>
@@ -109,6 +119,11 @@ function App() {
       <LoginButton />
       <LogoutButton />
       <Profile></Profile>
+      <div>
+      <h3>Attempts to ignore Losses</h3>
+      <h3>{counter}</h3>
+      </div>
+
       <Box display="flex"
         justifyContent="center"
         alignItems="center"

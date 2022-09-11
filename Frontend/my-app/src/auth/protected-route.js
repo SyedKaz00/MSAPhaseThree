@@ -10,7 +10,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
     const auth = null; // determine if authorized, from context or however you're doing it
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { isAuthenticated } = useAuth0();
 
     // If authorized, return an outlet that will render child elements
     // If not, return element that will navigate to login page

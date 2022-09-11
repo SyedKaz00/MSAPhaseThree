@@ -7,20 +7,31 @@ import Home from './home';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from "@auth0/auth0-react";
 import { BrowserRouter } from 'react-router-dom';
+import { createStore } from "redux";
+import allReducers from "./redux/reducers";
+import { Provider } from "react-redux";
+
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
+);
+
+const store = createStore(
+  allReducers,
 );
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Auth0Provider
+      <Auth0Provider
     domain="dev-n2jtarjd.us.auth0.com"
     clientId="LnYbL8zo7iqCgti0teD73zNskFxZzdCC"
     redirectUri={'http://localhost:3000/app'}
-  >
-    <Home />
-  </Auth0Provider>,
-  </BrowserRouter>
+      >
+        <Provider store={store}>
+        <Home />
+        </Provider>
+      </Auth0Provider>,
+    </BrowserRouter>
   </React.StrictMode>
 );
 
