@@ -7,6 +7,7 @@ import {
   FormControlLabel,
   FormGroup,
   FormLabel,
+  Grid,
   Radio,
   RadioGroup,
   TextField,
@@ -14,7 +15,6 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import LoadingGif from "../src/loading.gif"
-import LoginButton from "./login";
 import LogoutButton from "./logout";
 import Profile from "./profile";
 //Implement Counter to count number of times user has checked their crypto losses
@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 increment,
 } from "./redux/action"; 
+import { Container } from "@mui/system";
 
 function App() {
   const BASE_API_URL = "https://api.coingecko.com/api/v3";
@@ -105,39 +106,29 @@ function App() {
   //Redux Code
   const counter = useSelector((state : any) => state.counter);
   const dispatch = useDispatch();
-
-
-
+  //Left expandable (With more reducers and multiple selectors in future) as the count could be used in different pages when expanding, so keeping it globally accessible is a plus
 
   return (
-    <Box>
-
-      <Box display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="10vh"
-      ><h1>Calculate Crypto Gains/Losses</h1>
-      </Box>
-      <LoginButton />
-      <LogoutButton />
-      <Profile></Profile>
-      <div>
-      <h3>Attempts to ignore Losses</h3>
-      <h3>{counter}</h3>
-      </div>
-
-      <Box display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="50vh"
-      >
-        <Box sx={{
-          width: '30%',
-
-          backgroundColor: 'LightBlue',
-          borderColor: 'pink',
-        }}>
-          <form>
+    <Container>
+      <Grid
+    container
+    spacing={0}
+    direction="row"
+    alignItems="center"
+    justifyContent="center"
+    style={{ minHeight: '100vh' }}
+  >
+    <Grid item sm={4} xs={12} style={{textAlign: "center"}}>
+    <h1>Calculate Crypto Gains/Losses</h1>
+    </Grid>
+    <Grid item sm={4} xs={12}  style={{textAlign: "center"}} > <Profile/></Grid>
+    <Grid item sm={4} xs={12} style={{textAlign: "center"}}>
+    <LogoutButton />
+    </Grid>
+    
+    <Grid item sm={6} xs={12} style={{height: '100%',backgroundColor: 'LightBlue',
+          borderColor: 'pink',}} >
+    <form>
             <FormGroup
               sx={{
                 padding: 2,
@@ -194,27 +185,23 @@ function App() {
 
             </FormGroup>
           </form>
-        </Box>
 
-        <Box sx={{
-          width: '30%',
-          height: '55%',
-          backgroundColor: 'LightCoral',
-          borderColor: 'pink',
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-
-        }}>
-          <div>
-            {loading ? <div> <img alt="Loading" src={LoadingGif} /> </div> : <Box textAlign="center" display="flex" justifyContent="center" alignItems="center" > <h2>Your Investment is now worth a whopping ${finalAmount.toFixed(2)}, from an initial of ${amount}</h2></Box>
+    </Grid>
+    <Grid item sm={6} xs={12}  style={{textAlign: "center",backgroundColor: 'LightCoral',height: '100%',}}>
+    <div>
+            {loading ? <div> <img alt="Loading" src={LoadingGif} /> </div> : <h2>Your Investment is now worth a whopping ${finalAmount.toFixed(2)}, from an initial of ${amount}</h2>
             }
           </div>
-        </Box>
 
-      </Box>
-    </Box>
+    </Grid>
+    <Grid item sm={12} xs={12} style={{textAlign: "center"}}>
+    <h3>You have checked {counter} times whether or not your investments were worth it </h3>
+    <h3></h3>
+    </Grid>
+  </Grid>
+    </Container>
   );
 }
 
 export default App;
+//<Box textAlign="center" display="flex"       justifyContent="center" alignItems="center" >
