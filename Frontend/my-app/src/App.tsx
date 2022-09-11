@@ -19,7 +19,9 @@ import LogoutButton from "./logout";
 import Profile from "./profile";
 //Implement Counter to count number of times user has checked their crypto losses
 import { useSelector, useDispatch } from "react-redux";
-import increment from "./redux/action"; 
+import {
+increment,
+} from "./redux/action"; 
 
 function App() {
   const BASE_API_URL = "https://api.coingecko.com/api/v3";
