@@ -14,7 +14,9 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import LoadingGif from "../src/loading.gif"
-
+import LoginButton from "./login";
+import LogoutButton from "./logout";
+import Profile from "./profile";
 
 function App() {
   const BASE_API_URL = "https://api.coingecko.com/api/v3";
@@ -104,7 +106,9 @@ function App() {
         minHeight="10vh"
       ><h1>Calculate Crypto Gains/Losses</h1>
       </Box>
-
+      <LoginButton />
+      <LogoutButton />
+      <Profile></Profile>
       <Box display="flex"
         justifyContent="center"
         alignItems="center"
